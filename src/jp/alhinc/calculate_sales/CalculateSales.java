@@ -44,13 +44,52 @@ public class CalculateSales {
 
 		List<File> rcdFiles = new ArrayList<File>();
 
-		for(int i = 0; i < files.length ; i++) {
-			String fileName = files[i].getName();
-			if(fileName.matches("[0-9]{8}$$.rcd$")) {
+		for(int i = 0; i < files.length ; i++) {//要素の数だけ繰り返す
+			String fileName = files[i].getName();//files[i]の中のファイル型のi番目の名前を取り出す
+			if(fileName.matches("[0-9]{8}$$.rcd$")) {//取り出した名前のうち、""内の形に合うものをrcdFilesに入れる
 				rcdFiles.add(files[i]);
-
 			}
 		}
+		//
+		for(int j = 0; j < rcdFiles.size(); j++) {
+			// ファイルの読込をしたい
+			// BufferedReaderのreadLineを使いたい
+			// BufferedReaderが必要
+			//FileReaderが必要
+			// Fileが必要
+
+
+			BufferedReader br = null;
+			//
+			String FileName = files[j].getName();
+			//
+			File file = new File("C:\\Users\\trainee1445\\Desktop\\売上集計システム課題", FileName);
+			FileReader fr = new FileReader(file);
+			br = new BufferedReader(fr);
+
+			String line;
+			// 一行ずつ読み込む
+			while((line = br.readLine()) != null) {
+				// 読み込んだ内容をリストに入れる
+				ArrayList<String> values = new ArrayList<String>();
+
+			}
+
+			//売上ファイルから読み込んだ売上金額をMapに加算していくために、型の変換を行います。
+			//※詳細は後述で説明
+			long fileSale = Long.parseLong(売上⾦額);
+
+			//読み込んだ売上⾦額を加算します。
+			//※詳細は後述で説明
+			Long saleAmount = 売上⾦額を⼊れたMap.get(⽀店コード) + long に変換した売上⾦額;
+
+			//加算した売上⾦額をMapに追加します。
+
+
+			br.close();
+
+		}
+
 		// 支店別集計ファイル書き込み処理
 		if(!writeFile(args[0], FILE_NAME_BRANCH_OUT, branchNames, branchSales)) {
 			return;
@@ -71,8 +110,11 @@ public class CalculateSales {
 		BufferedReader br = null;
 
 		try {
+			//
 			File file = new File(path, fileName);
+			//
 			FileReader fr = new FileReader(file);
+			//
 			br = new BufferedReader(fr);
 
 			String line;
