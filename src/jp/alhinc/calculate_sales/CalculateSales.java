@@ -1,5 +1,4 @@
 package jp.alhinc.calculate_sales;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -8,7 +7,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 public class CalculateSales {
 
 	// 支店定義ファイル名
@@ -46,7 +44,7 @@ public class CalculateSales {
 
 		for(int i = 0; i < files.length ; i++) {//要素の数だけ繰り返す
 			String fileName = files[i].getName();//files[i]の中のファイル型のi番目の名前を取り出す
-			if(fileName.matches("[0-9]{8}$$.rcd$")) {//取り出した名前のうち、""内の形に合うものをrcdFilesに入れる
+			if(fileName.matches("[0-9]{8}[.]rcd$")) {//取り出した名前のうち、""内の形に合うものをrcdFilesに入れる
 				rcdFiles.add(files[i]);
 			}
 		}
@@ -57,44 +55,55 @@ public class CalculateSales {
 			// BufferedReaderが必要
 			//FileReaderが必要
 			// Fileが必要
-
-
 			BufferedReader br = null;
 			//
 			String FileName = files[j].getName();
-			//
-			File file = new File("C:\\Users\\trainee1445\\Desktop\\売上集計システム課題", FileName);
-			FileReader fr = new FileReader(file);
-			br = new BufferedReader(fr);
+			//String型「FileName」にfilesのj番目のファイル名をString型で代入する
 
-			String line;
-			// 一行ずつ読み込む
-			while((line = br.readLine()) != null) {
-				// 読み込んだ内容をリストに入れる
-				ArrayList<String> values = new ArrayList<String>();
+			try {
+				File file = new File("C:\\Users\\trainee1445\\Desktop\\売上集計システム課題", FileName);
+				FileReader fr = new FileReader(file);
+				br = new BufferedReader(fr);
+
+				String line;
+				// 一行ずつ読み込む
+				List<String> SaleList = new ArrayList<String>();//リスト「SaleList」作成
+
+				while((line = br.readLine()) != null) {
+					// 読み込んだ内容をリストに入れる
+
+					SaleList.add(line); //リスト「SaleList」に一行ずつ読み込んだデータを入れる
+				}
+
+
+				//売上ファイルから読み込んだ売上金額をMapに加算していくために、型の変換を行います。
+				//※詳細は後述で説明
+				long fileSale = Long.parseLong(SaleList.get(1));
+
+				//読み込んだ売上⾦額を加算します。
+				//※詳細は後述で説明
+				Long saleAmount = branchSales.get(SaleList.get(0)) + fileSale;
+
+				//加算した売上⾦額をMapに追加します。
+				 branchSales.put(SaleList.get(0), saleAmount); //SaleListに入れた0番目（支店コード）とLong型に
+				 												//変換して加算した1番目（売上）をmapに追加
+
+			}catch(IOException e) {
+				System.out.println(UNKNOWN_ERROR);
+
+				 try {
+					br.close();
+				} catch (IOException e1) {
+					// TODO 自動生成された catch ブロック
+					e1.printStackTrace();
+				}
 
 			}
-
-			//売上ファイルから読み込んだ売上金額をMapに加算していくために、型の変換を行います。
-			//※詳細は後述で説明
-			long fileSale = Long.parseLong(売上⾦額);
-
-			//読み込んだ売上⾦額を加算します。
-			//※詳細は後述で説明
-			Long saleAmount = 売上⾦額を⼊れたMap.get(⽀店コード) + long に変換した売上⾦額;
-
-			//加算した売上⾦額をMapに追加します。
-
-
-			br.close();
-
 		}
-
 		// 支店別集計ファイル書き込み処理
 		if(!writeFile(args[0], FILE_NAME_BRANCH_OUT, branchNames, branchSales)) {
 			return;
 		}
-
 	}
 
 	/**
