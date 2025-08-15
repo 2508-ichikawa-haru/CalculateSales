@@ -1,7 +1,9 @@
 package jp.alhinc.calculate_sales;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -167,9 +169,30 @@ public class CalculateSales {
 		// ※ここに書き込み処理を作成してください。(処理内容3-1)
 		BufferedWriter bw = null;
 		try {
-			File file = new File(path, fileName);
+			File file = new File("C:\\Users\\trainee1445\\Desktop\\売上集計システム課題", fileName);
 			FileWriter fw = new FileWriter(file);
 			bw = new BufferedWriter(fw);
+
+			 //拡張for文でMapからKeyの一覧を取得してKeyの数だけ繰り返す
+			for (String key :  branchSales.keySet()) {
+				bw.write(key + "," + branchNames.get(key) + "," +  branchSales.get(key));//keyにあわせて、それぞれのmapから
+																						 //keyに付随するvalueの値を取り出す
+				bw.newLine(); //改行する
+			}
+
+		}catch(IOException e) {
+			System.out.println(UNKNOWN_ERROR);
+			return false;
+
+		}finally {
+			if(bw != null) {
+				try {
+					bw.close();
+				} catch(IOException e) {
+					System.out.println(UNKNOWN_ERROR);
+					return false;
+				}
+			}
 		}
 		return true;
 	}
