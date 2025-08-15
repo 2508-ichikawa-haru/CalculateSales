@@ -90,15 +90,15 @@ public class CalculateSales {
 				 branchSales.put(saleList.get(0), saleAmount); //SaleListに入れた0番目（支店コード）とLong型に
 				 												//変換して加算した1番目（売上）をmapに追加
 
-			}catch(IOException e) {
+			} catch(IOException e) {
 				System.out.println(UNKNOWN_ERROR);
 				return ;
 
-			}finally {
+			} finally {
 				if(br != null) {
 					try {
 						br.close();
-					}catch(IOException e) {
+					} catch(IOException e) {
 						System.out.println(UNKNOWN_ERROR);
 						return ;
 					}
@@ -183,11 +183,11 @@ public class CalculateSales {
 				bw.newLine(); //改行する
 			}
 
-		}catch(IOException e) {
+		} catch(IOException e) {
 			System.out.println(UNKNOWN_ERROR);
 			return false;
 
-		}finally {
+		} finally {
 			if(bw != null) {
 				try {
 					bw.close();
