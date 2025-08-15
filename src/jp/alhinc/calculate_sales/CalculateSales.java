@@ -40,7 +40,7 @@ public class CalculateSales {
 
 
 		// ※ここから集計処理を作成してください。(処理内容2-1、2-2)
-		File[] files = new File("C:\\Users\\trainee1445\\Desktop\\売上集計システム課題").listFiles();
+		File[] files = new File(args[0]).listFiles();
 
 		List<File> rcdFiles = new ArrayList<File>();
 
@@ -51,7 +51,7 @@ public class CalculateSales {
 			}
 		}
 		//
-		for(int j = 0; j < rcdFiles.size(); j++) {
+		for(int i = 0; i < rcdFiles.size(); i++) {
 			// ファイルの読込をしたい
 			// BufferedReaderのreadLineを使いたい
 			// BufferedReaderが必要
@@ -59,47 +59,50 @@ public class CalculateSales {
 			// Fileが必要
 			BufferedReader br = null;
 			//
-			String FileName = files[j].getName();
-			//String型「FileName」にfilesのj番目のファイル名をString型で代入する
+			String fileName = rcdFiles.get(i).getName();
+			//String型「fileName」にrcdFilesのi番目のファイル名をString型で代入する
 
 			try {
-				File file = new File("C:\\Users\\trainee1445\\Desktop\\売上集計システム課題", FileName);
+				File file = new File(args[0], fileName);
 				FileReader fr = new FileReader(file);
 				br = new BufferedReader(fr);
 
 				String line;
 				// 一行ずつ読み込む
-				List<String> SaleList = new ArrayList<String>();//リスト「SaleList」作成
+				List<String> saleList = new ArrayList<String>();//リスト「SaleList」作成
 
 				while((line = br.readLine()) != null) {
 					// 読み込んだ内容をリストに入れる
 
-					SaleList.add(line); //リスト「SaleList」に一行ずつ読み込んだデータを入れる
+					saleList.add(line); //リスト「SaleList」に一行ずつ読み込んだデータを入れる
 				}
 
 
 				//売上ファイルから読み込んだ売上金額をMapに加算していくために、型の変換を行います。
 				//※詳細は後述で説明
-				long fileSale = Long.parseLong(SaleList.get(1));
+				long fileSale = Long.parseLong(saleList.get(1));
 
 				//読み込んだ売上⾦額を加算します。
 				//※詳細は後述で説明
-				Long saleAmount = branchSales.get(SaleList.get(0)) + fileSale;
+				Long saleAmount = branchSales.get(saleList.get(0)) + fileSale;
 
 				//加算した売上⾦額をMapに追加します。
-				 branchSales.put(SaleList.get(0), saleAmount); //SaleListに入れた0番目（支店コード）とLong型に
+				 branchSales.put(saleList.get(0), saleAmount); //SaleListに入れた0番目（支店コード）とLong型に
 				 												//変換して加算した1番目（売上）をmapに追加
 
 			}catch(IOException e) {
 				System.out.println(UNKNOWN_ERROR);
+				return ;
 
-				 try {
-					br.close();
-				} catch (IOException e1) {
-					// TODO 自動生成された catch ブロック
-					e1.printStackTrace();
+			}finally {
+				if(br != null) {
+					try {
+						br.close();
+					}catch(IOException e) {
+						System.out.println(UNKNOWN_ERROR);
+					return ;
+					}
 				}
-
 			}
 		}
 		// 支店別集計ファイル書き込み処理
@@ -169,7 +172,7 @@ public class CalculateSales {
 		// ※ここに書き込み処理を作成してください。(処理内容3-1)
 		BufferedWriter bw = null;
 		try {
-			File file = new File("C:\\Users\\trainee1445\\Desktop\\売上集計システム課題", fileName);
+			File file = new File(path, fileName);
 			FileWriter fw = new FileWriter(file);
 			bw = new BufferedWriter(fw);
 
