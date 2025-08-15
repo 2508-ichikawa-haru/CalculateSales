@@ -44,7 +44,7 @@ public class CalculateSales {
 
 		List<File> rcdFiles = new ArrayList<File>();
 
-		for(int i = 0; i < files.length ; i++) {//要素の数だけ繰り返す
+		for(int i = 0; i < files.length; i++) {//要素の数だけ繰り返す
 			String fileName = files[i].getName();//files[i]の中のファイル型のi番目の名前を取り出す
 			if(fileName.matches("[0-9]{8}[.]rcd$")) {//取り出した名前のうち、""内の形に合うものをrcdFilesに入れる
 				rcdFiles.add(files[i]);
@@ -100,7 +100,7 @@ public class CalculateSales {
 						br.close();
 					}catch(IOException e) {
 						System.out.println(UNKNOWN_ERROR);
-					return ;
+						return ;
 					}
 				}
 			}
@@ -137,7 +137,7 @@ public class CalculateSales {
 				String[] items = line.split(",");
 				// ※ここの読み込み処理を変更してください。(処理内容1-2)
 				System.out.println(line);
-				branchNames.put(items[0],items[1]);
+				branchNames.put(items[0], items[1]);
 				branchSales.put(items[0], 0L);
 			}
 
