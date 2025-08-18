@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,7 @@ public class CalculateSales {
 	private static final String UNKNOWN_ERROR = "予期せぬエラーが発生しました";
 	private static final String FILE_NOT_EXIST = "支店定義ファイルが存在しません";
 	private static final String FILE_INVALID_FORMAT = "支店定義ファイルのフォーマットが不正です";
+	private static final String FILE_NOT_SEQUENTIAL = "売上ファイル名が連番になっていません";
 
 	/**
 	 * メインメソッド
@@ -50,6 +52,25 @@ public class CalculateSales {
 				rcdFiles.add(files[i]);
 			}
 		}
+
+		//エラー処理2-1
+		//OS問わず、ディレクトリ内のファイルを昇順にソートされた状態で読み込む
+		Collections.sort(rcdFiles);
+		for(int i = 0; i < rcdFiles.size() -1; i++) {
+
+			int former = Integer.parseInt(rcdFiles.get(i).getName().substring(0, 8));
+			int latter = Integer.parseInt(rcdFiles.get(i+1).getName().substring(0, 8));
+
+		      //比較する2つのファイル名の先頭から数字の8文字を切り出し、int型に変換します。
+			if((latter - former) != 1) {
+				//2つのファイル名の数字を比較して、差が1ではなかったら、
+				System.out.println(FILE_NOT_SEQUENTIAL);
+				return ;
+
+				//エラーメッセージ「売上ファイル名が連番になっていません」をコンソールに表示します。
+			}
+		}
+
 		//
 		for(int i = 0; i < rcdFiles.size(); i++) {
 			// ファイルの読込をしたい
@@ -65,6 +86,8 @@ public class CalculateSales {
 			try {
 				File file = new File(args[0], fileName);
 				FileReader fr = new FileReader(file);
+
+
 				br = new BufferedReader(fr);
 
 				String line;
@@ -126,6 +149,15 @@ public class CalculateSales {
 		try {
 			//
 			File file = new File(path, fileName);
+
+			//エラー処理1
+			if(!file.exists()) {
+				System.out.println(FILE_NOT_EXIST);
+				return false;
+			}
+
+
+
 			//
 			FileReader fr = new FileReader(file);
 			//
@@ -135,6 +167,13 @@ public class CalculateSales {
 			// 一行ずつ読み込む
 			while((line = br.readLine()) != null) {
 				String[] items = line.split(",");
+
+				//エラー処理1続き
+				if((items.length != 2) || !(items[0].matches("[0-9]{3}$"))){ //支店コードを識別するif・正規表現構文
+					System.out.println( FILE_INVALID_FORMAT);
+					return false;
+				}
+
 				// ※ここの読み込み処理を変更してください。(処理内容1-2)
 				System.out.println(line);
 				branchNames.put(items[0], items[1]);
