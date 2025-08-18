@@ -23,6 +23,9 @@ public class CalculateSales {
 	private static final String FILE_NOT_EXIST = "支店定義ファイルが存在しません";
 	private static final String FILE_INVALID_FORMAT = "支店定義ファイルのフォーマットが不正です";
 	private static final String FILE_NOT_SEQUENTIAL = "売上ファイル名が連番になっていません";
+	private static final String SALES_EXCEEDED_10_DIGITS = "合計金額が10桁を超えました";
+	private static final String BRANCH_CODE_INVALID = "該当ファイル名>の支店コードが不正です";
+
 
 	/**
 	 * メインメソッド
@@ -106,12 +109,26 @@ public class CalculateSales {
 				long fileSale = Long.parseLong(saleList.get(1));
 
 				//読み込んだ売上⾦額を加算します。
-				//※詳細は後述で説明
+
+
 				Long saleAmount = branchSales.get(saleList.get(0)) + fileSale;
+
+				//売上金額の合計が10桁を超えたか確認（エラー処理2-2）
+				if(saleAmount >= 10000000000L){
+					//売上金額が11桁以上の場合、エラーメッセージをコンソールに表示します。
+					System.out.println(SALES_EXCEEDED_10_DIGITS);
+					return ;
+				}
+
 
 				//加算した売上⾦額をMapに追加します。
 				 branchSales.put(saleList.get(0), saleAmount); //SaleListに入れた0番目（支店コード）とLong型に
 				 												//変換して加算した1番目（売上）をmapに追加
+
+				 if (!branchSales.containsKey(saleList.get(0))) {
+					    //⽀店情報を保持しているMapに売上ファイルの⽀店コードが存在しなかった場合は、
+					    //エラーメッセージをコンソールに表⽰します。←8/19質問する
+					}
 
 			} catch(IOException e) {
 				System.out.println(UNKNOWN_ERROR);
