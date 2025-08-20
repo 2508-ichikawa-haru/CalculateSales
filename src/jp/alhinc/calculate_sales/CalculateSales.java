@@ -127,7 +127,7 @@ public class CalculateSales {
 				}
 
 				//エラー処理3-3
-				if(!saleList.get(1).matches("^[0-9]*$")) {
+				if(!saleList.get(1).matches("^[0-9]+$")) {
 				    //売上金額が数字ではなかった場合は、
 				    //エラーメッセージをコンソールに表示します。
 					System.out.println(UNKNOWN_ERROR);
