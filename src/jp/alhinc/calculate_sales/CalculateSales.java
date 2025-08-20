@@ -119,21 +119,27 @@ public class CalculateSales {
 					return;
 				}
 
-
-				//売上ファイルから読み込んだ売上金額をMapに加算していくために、型の変換を行います。
-				//※詳細は後述で説明
-				long fileSale = Long.parseLong(saleList.get(1));
+				if (!branchNames.containsKey(saleList.get(0))) {//(エラー処理2-3)
+				    //支店情報を保持しているMapに売上ファイルの支店コードが存在しなかった場合は、
+				    //エラーメッセージをコンソールに表示します。
+					System.out.println(rcdFiles.get(i).getName() + FILE_CODE_FORMAT);
+					return;
+				}
 
 				//エラー処理3-3
 				if(!saleList.get(1).matches("^[0-9]*$")) {
-				    //売上⾦額が数字ではなかった場合は、
+				    //売上金額が数字ではなかった場合は、
 				    //エラーメッセージをコンソールに表示します。
 					System.out.println(UNKNOWN_ERROR);
 					return;
 				}
 
-				//読み込んだ売上金額を加算します。
+				//売上ファイルから読み込んだ売上金額をMapに加算していくために、型の変換を行います。
+				//※詳細は後述で説明
+				long fileSale = Long.parseLong(saleList.get(1));
 
+
+				//読み込んだ売上金額を加算します。
 
 				Long saleAmount = branchSales.get(saleList.get(0)) + fileSale;
 
@@ -149,14 +155,7 @@ public class CalculateSales {
 				 branchSales.put(saleList.get(0), saleAmount); //SaleListに入れた0番目（支店コード）とLong型に
 				 												//変換して加算した1番目（売上）をmapに追加
 
-				 if (!branchNames.containsKey(saleList.get(0))) {//(エラー処理2-3)
-					    //⽀店情報を保持しているMapに売上ファイルの支店コードが存在しなかった場合は、
-					    //エラーメッセージをコンソールに表示します。
-					 System.out.println(rcdFiles.get(i).getName() + FILE_CODE_FORMAT);
-						return;
-					}
-
-			} catch(IOException e) {
+				 			} catch(IOException e) {
 				System.out.println(UNKNOWN_ERROR);
 				return;
 
@@ -208,7 +207,7 @@ public class CalculateSales {
 
 				//エラー処理1続き
 				if((items.length != 2) || !(items[0].matches("[0-9]{3}$"))){ //支店コードを識別するif・正規表現構文
-					System.out.println( FILE_INVALID_FORMAT);
+					System.out.println(FILE_INVALID_FORMAT);
 					return false;
 				}
 
