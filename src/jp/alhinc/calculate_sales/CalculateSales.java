@@ -12,10 +12,10 @@ import java.util.List;
 import java.util.Map;
 public class CalculateSales {
 
-	// 支店定義ファイル名
+	//支店定義ファイル名
 	private static final String FILE_NAME_BRANCH_LST = "branch.lst";
 
-	// 支店別集計ファイル名
+	//支店別集計ファイル名
 	private static final String FILE_NAME_BRANCH_OUT = "branch.out";
 
 	// エラーメッセージ
@@ -34,26 +34,26 @@ public class CalculateSales {
 	 * @param コマンドライン引数
 	 */
 	public static void main(String[] args) {
-		// 支店コードと支店名を保持するMap
+		//支店コードと支店名を保持するMap
 		Map<String, String> branchNames = new HashMap<>();
-		// 支店コードと売上金額を保持するMap
+		//支店コードと売上金額を保持するMap
 		Map<String, Long> branchSales = new HashMap<>();
 
 		//エラー処理3-1
 		if(args.length != 1) {
-			 //コマンドライン引数が1つ設定されていなかった場合は、
+			//コマンドライン引数が1つ設定されていなかった場合は、
 		    //エラーメッセージをコンソールに表示します。
 			System.out.println(UNKNOWN_ERROR);
 			return;
 		}
 
-		// 支店定義ファイル読み込み処理
+		//支店定義ファイル読み込み処理
 		if(!readFile(args[0], FILE_NAME_BRANCH_LST, branchNames, branchSales)) {
 			return;
 		}
 
 
-		// ※ここから集計処理を作成してください。(処理内容2-1、2-2)
+		//※ここから集計処理を作成してください。(処理内容2-1、2-2)
 		File[] files = new File(args[0]).listFiles();
 
 		List<File> rcdFiles = new ArrayList<File>();
@@ -74,7 +74,7 @@ public class CalculateSales {
 			int former = Integer.parseInt(rcdFiles.get(i).getName().substring(0, 8));
 			int latter = Integer.parseInt(rcdFiles.get(i + 1).getName().substring(0, 8));
 
-		      //比較する2つのファイル名の先頭から数字の8文字を切り出し、int型に変換します。
+		    //比較する2つのファイル名の先頭から数字の8文字を切り出し、int型に変換します。
 			if((latter - former) != 1) {
 				//2つのファイル名の数字を比較して、差が1ではなかったら、
 				System.out.println(FILE_NOT_SEQUENTIAL);
@@ -84,11 +84,11 @@ public class CalculateSales {
 		}
 
 		for(int i = 0; i < rcdFiles.size(); i++) {
-			// ファイルの読込をしたい
-			// BufferedReaderのreadLineを使いたい
-			// BufferedReaderが必要
+			//ファイルの読込をしたい
+			//BufferedReaderのreadLineを使いたい
+			//BufferedReaderが必要
 			//FileReaderが必要
-			// Fileが必要
+			//Fileが必要
 			BufferedReader br = null;
 			String fileName = rcdFiles.get(i).getName();
 			//String型「fileName」にrcdFilesのi番目のファイル名をString型で代入する
@@ -101,13 +101,13 @@ public class CalculateSales {
 				br = new BufferedReader(fr);
 
 				String line;
-				// 一行ずつ読み込む
+				//一行ずつ読み込む
 				List<String> saleList = new ArrayList<String>();//リスト「SaleList」作成
 
 				while((line = br.readLine()) != null){
 					// 読み込んだ内容をリストに入れる
-
-					saleList.add(line); //リスト「SaleList」に一行ずつ読み込んだデータを入れる
+					//リスト「SaleList」に一行ずつ読み込んだデータを入れる
+					saleList.add(line);
 				}
 
 
@@ -140,7 +140,6 @@ public class CalculateSales {
 
 
 				//読み込んだ売上金額を加算します。
-
 				Long saleAmount = branchSales.get(saleList.get(0)) + fileSale;
 
 				//売上金額の合計が10桁を超えたか確認（エラー処理2-2）
@@ -151,11 +150,11 @@ public class CalculateSales {
 				}
 
 
-				//加算した売上金額をMapに追加します。
+				 //加算した売上金額をMapに追加します。
 				 branchSales.put(saleList.get(0), saleAmount); //SaleListに入れた0番目（支店コード）とLong型に
-				 												//変換して加算した1番目（売上）をmapに追加
+				 											   //変換して加算した1番目（売上）をmapに追加
 
-				 			} catch(IOException e) {
+			} catch(IOException e) {
 				System.out.println(UNKNOWN_ERROR);
 				return;
 
@@ -201,7 +200,7 @@ public class CalculateSales {
 			br = new BufferedReader(fr);
 
 			String line;
-			// 一行ずつ読み込む
+			//一行ずつ読み込む
 			while((line = br.readLine()) != null) {
 				String[] items = line.split(",");
 
@@ -211,7 +210,7 @@ public class CalculateSales {
 					return false;
 				}
 
-				// ※ここの読み込み処理を変更してください。(処理内容1-2)
+				//※ここの読み込み処理を変更してください。(処理内容1-2)
 				branchNames.put(items[0], items[1]);
 				branchSales.put(items[0], 0L);
 			}
@@ -220,7 +219,7 @@ public class CalculateSales {
 			System.out.println(UNKNOWN_ERROR);
 			return false;
 		} finally {
-			// ファイルを開いている場合
+			//ファイルを開いている場合
 			if(br != null) {
 				try {
 					//ファイルを閉じる
@@ -251,7 +250,7 @@ public class CalculateSales {
 			FileWriter fw = new FileWriter(file);
 			bw = new BufferedWriter(fw);
 
-			 //拡張for文でMapからKeyの一覧を取得してKeyの数だけ繰り返す
+			//拡張for文でMapからKeyの一覧を取得してKeyの数だけ繰り返す
 			for (String key :  branchSales.keySet()) {
 				bw.write(key + "," + branchNames.get(key) + "," +  branchSales.get(key));//keyにあわせて、それぞれのmapから
 																						 //keyに付随するvalueの値を取り出す
