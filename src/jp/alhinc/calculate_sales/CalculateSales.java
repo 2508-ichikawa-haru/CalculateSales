@@ -61,7 +61,7 @@ public class CalculateSales {
 
 		for(int i = 0; i < files.length; i++) {//要素の数だけ繰り返す
 			String fileName = files[i].getName();//files[i]の中のファイル型のi番目の名前を取り出す
-			if(files[i].isFile() && fileName.matches("[0-9]{8}[.]rcd$")){//取り出した名前のうち、""内の形に合うものをrcdFilesに入れる
+			if(files[i].isFile() && fileName.matches("[0-9]{8}[.]rcd$")){//取り出した名前のうち、正規表現式と一致かつファイルであると確認できたものをrcdFilesに入れる
 				rcdFiles.add(files[i]);//エラー処理3-2
 			}							//対象がファイルであり、「数字8桁.rcd」なのか判定します。
 		}
@@ -79,7 +79,6 @@ public class CalculateSales {
 				//2つのファイル名の数字を比較して、差が1ではなかったら、
 				System.out.println(FILE_NOT_SEQUENTIAL);
 				return;
-
 				//エラーメッセージ「売上ファイル名が連番になっていません」をコンソールに表示します。
 			}
 		}
@@ -200,7 +199,6 @@ public class CalculateSales {
 			}
 
 			FileReader fr = new FileReader(file);
-			//
 			br = new BufferedReader(fr);
 
 			String line;
